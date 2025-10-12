@@ -1,0 +1,14 @@
+version: "1"
+context:
+  active-host: "nz133.us1.dbt.com"
+  active-project: "70471823514781"
+projects:
+  - project-name: "E-Commerce Unified Analytics Platform"
+    project-id: "70471823514781"
+    account-name: "MarketMyVenture"
+    account-id: "70471823500527"
+    account-host: "nz133.us1.dbt.com"
+    token-name: "cloud-cli-318e"
+    token-value: "dbtu_xfLf0DQyv5VifKJQH60bp_zJOtOQlbn4-x3DO5u5EMNJ2dOpl0"
+
+

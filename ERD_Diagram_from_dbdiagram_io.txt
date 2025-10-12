@@ -1,0 +1,105 @@
+// Use DBML to define your database structure
+// Docs: https://dbml.dbdiagram.io/docs
+
+Table ORDERS {
+  order_id varchar [pk]
+  customer_id varchar [not null, ref: > CUSTOMERS.customer_id]
+  order_status varchar
+  order_purchase_timestamp timestamp
+  order_approved_at timestamp
+  order_delivered_carrier_date timestamp
+  order_delivered_customer_date timestamp
+  order_estimated_delivery_date date
+}
+
+
+Table PRODUCTS {
+  product_id varchar [pk]
+  product_category_name varchar [ref: > PRODUCT_CATEGORY.product_category_name]
+  product_name_length int
+  product_description_length int
+  product_photos_qty int
+  product_weight_g int
+  product_length_cm int
+  product_height_cm int
+  product_width_cm int
+}
+
+
+Table ORDER_ITEMS {
+  order_id varchar [not null, ref: > ORDERS.order_id]
+  order_item_id int [not null] // 1..N per order
+  product_id varchar [not null, ref: > PRODUCTS.product_id]
+  seller_id varchar [not null, ref: > SELLERS.seller_id]
+  shipping_limit_date timestamp
+  price decimal(10,2)
+  freight_value decimal(10,2)
+
+  indexes {
+    (order_id, order_item_id) [pk]  // composite PK (diagram-only)
+  }
+}
+
+
+Table SELLERS {
+  seller_id varchar [pk]
+  seller_zip_code_prefix int
+  seller_city varchar
+  seller_state varchar
+}
+
+Table PRODUCT_CATEGORY {
+  product_category_name varchar [pk]
+  product_category_name_english varchar
+}
+
+
+Table CUSTOMERS {
+  customer_id varchar [pk]
+  customer_unique_id varchar
+  customer_zip_code_prefix int
+  customer_city varchar
+  customer_state varchar
+}
+
+
+Table GEOLOCATION {
+  geolocation_zip_code_prefix int
+  geolocation_lat varchar
+  geolocation_lng varchar
+  geolocation_city varchar
+  geolocation_state varchar
+
+  Note: 'Zip prefixes are not unique in raw Olist; keep as staging map.'
+}
+
+
+
+Table PAYMENTS {
+  payment_id varchar [pk, note: 'Surrogate key']
+  order_id varchar [not null, ref: > ORDERS.order_id]
+  payment_sequential int [not null, note: '1..N per order in source']
+  payment_type varchar
+  payment_installments int
+  payment_value decimal(10,2)
+
+  indexes {
+    (order_id, payment_sequential) [unique] // source natural key (diagram-only)
+  }
+}
+
+
+Table REVIEWS {
+  order_id  varchar [pk, ref: > ORDERS.order_id, note: '0 or 1 review per order']
+  review_id varchar [unique]  // keep if you still want the source review_id
+  review_score int
+  review_comment_title varchar
+  review_comment_message varchar
+  review_creation_date timestamp
+  review_answer_timestamp timestamp
+}
+
+
+Ref: GEOLOCATION.(geolocation_zip_code_prefix, geolocation_city) - CUSTOMERS.(customer_zip_code_prefix, customer_city)
+Ref: GEOLOCATION.(geolocation_zip_code_prefix, geolocation_city) - SELLERS.(seller_zip_code_prefix, seller_city)
+ 
