@@ -39,6 +39,7 @@ This project simulates an end-to-end e-commerce analytics platform with a **Bron
 ---
 
 ## 🗂️ Folder Structure
+```
 eUAP/
 ├── models/
 │   ├── staging/
@@ -52,13 +53,15 @@ eUAP/
 ├── ERD_Diagram.png
 ├── dbt_project.yml
 └── README.md
+```
 
 
 ---
 
 ## 🧠 Author
 **Khurram Hayat Khan**  
-Data Engineer @ Teradata | Snowflake | Apache Spark | AWS | Airflow 
+_Data Engineer @ Teradata_  
+**Tech Stack:** Snowflake · Apache Spark · AWS · dbt · Airflow  
 🔗 [LinkedIn](https://www.linkedin.com/in/mkhurramhk/)
 
 ---
