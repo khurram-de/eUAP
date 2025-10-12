@@ -7,3 +7,5 @@ dbt_internal_packages/
 # Ignore dbt credentials and local config
 .dbt/
 ~/.dbt/
+git_reference.md
+# Ignore OS files
