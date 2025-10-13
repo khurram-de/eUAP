@@ -8,4 +8,6 @@ dbt_internal_packages/
 .dbt/
 ~/.dbt/
 git_reference.md
+.dbt_cloud
+.dbt_cloud.yml
 # Ignore OS files
