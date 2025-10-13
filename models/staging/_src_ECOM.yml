@@ -1,0 +1,174 @@
+sources:
+  - name: ECOM_RAW_STAGING
+    database: RAW
+    schema: ECOM
+    tables:
+      - name : ORDERS
+        description: "This table contains order information including order_id, customer_id, order_status, purchase_timestamp, order and delivery delivery status."
+        columns:
+          - name: order_id
+            description: "Unique identifier for each order."
+            tests:
+              - not_null
+              - unique
+          - name: CUSTOMER_ID
+            description: "Identifier for the customer who placed the order."
+            tests:
+              - not_null
+          - name: ORDER_STATUS
+            description: "Current status of the order (e.g., pending, shipped, delivered)."
+            tests:
+              - not_null
+
+
+      - name : CUSTOMERS
+        description: "This table contains customer information including customer_id, customer_unique_id, customer_zip_code_prefix, customer_city, and customer_state."
+        columns:
+          - name: CUSTOMER_ID
+            description: "Unique identifier for each customer."
+            tests:
+              - not_null
+              - unique
+          - name: CUSTOMER_UNIQUE_ID
+            description: "Unique identifier for each customer across multiple orders."
+            tests:
+              - not_null
+          - name: CUSTOMER_ZIP_CODE_PREFIX
+            description: "Zip code prefix of the customer's address."
+            tests:
+              - not_null
+          - name: CUSTOMER_CITY
+            description: "City of the customer's address."
+            tests:
+              - not_null
+          - name: CUSTOMER_STATE
+            description: "State of the customer's address."
+            tests:
+              - not_null
+
+
+      - name: SELLERS
+        description: "This table contains seller information including seller_id, seller_zip_code_prefix, seller_city, and seller_state."
+        columns:
+          - name: SELLER_ID
+            description: "Unique identifier for each seller."
+            tests:
+              - not_null
+              - unique
+          - name: SELLER_ZIP_CODE_PREFIX
+            description: "Zip code prefix of the seller's address."
+            tests:
+              - not_null
+          - name: SELLER_CITY
+            description: "City of the seller's address."
+            tests:
+              - not_null
+          - name: SELLER_STATE
+            description: "State of the seller's address."
+            tests:
+              - not_null
+
+      - name: ORDER_ITEMS
+        description: "This table contains order item information including order_id, order_item_id, product_id, seller_id, shipping_limit_date, price, freight_value."
+        columns:
+          - name: ORDER_ID
+            description: "Identifier for the order to which the item belongs."
+            tests:
+              - not_null
+          - name: ORDER_ITEM_ID
+            description: "Unique identifier for each item within an order."
+            tests:
+              - not_null
+          - name: PRODUCT_ID
+            description: "Identifier for the product being ordered."
+            tests:
+              - not_null
+          - name: SELLER_ID
+            description: "Identifier for the seller fulfilling the order."
+            tests:
+              - not_null
+          - name: SHIPPING_LIMIT_DATE
+            description: "Date by which the item should be shipped."
+            tests:
+              - not_null
+          - name: PRICE
+            description: "Price of the item."
+            tests:
+              - not_null
+          - name: FREIGHT_VALUE
+            description: "Freight value associated with the item."
+            tests:
+              - not_null
+
+      - name: PAYMENTS
+        description: "This table contains payment information including order_id, payment_sequential, payment_type, payment_installments, and payment_value."
+        columns:
+          - name: ORDER_ID
+            description: "Identifier for the order associated with the payment."
+            tests:
+              - not_null
+          - name: PAYMENT_SEQUENTIAL
+            description: "Sequential number of the payment for the order."
+            tests:
+              - not_null
+          - name: PAYMENT_TYPE
+            description: "Type of payment (e.g., credit card, boleto, voucher)."
+            tests:
+              - not_null
+          - name: PAYMENT_INSTALLMENTS
+            description: "Number of installments for the payment."
+            tests:
+              - not_null
+          - name: PAYMENT_VALUE
+            description: "Value of the payment."
+            tests:
+              - not_null
+
+      - name: PRODUCTS
+        description: "This table contains product information including product_id, product_category_name, product_name_length, product_description_length, product_photos_qty, and product_weight_g."
+        columns:
+          - name: PRODUCT_ID
+            description: "Unique identifier for each product."
+            tests:
+              - not_null
+              - unique
+
+      - name: REVIEWS
+        description: "Staging table for ECOM reviews data."
+        columns:
+          - name: ORDER_ID
+            description: "Identifier for the order associated with the review."
+            tests:
+              - not_null
+          - name: REVIEW_ID
+            description: "Unique identifier for each review."
+            tests:
+              - not_null
+          - name: REVIEW_SCORE
+            description: "Score given in the review (e.g., 1 to 5)."
+            tests:
+              - not_null
+
+      - name: GEOLOCATION
+        description: "This table contains geolocation information including geolocation_zip_code_prefix, geolocation_lat, geolocation_lng, geolocation_city, and geolocation_state."
+        columns:
+          - name: GEOLOCATION_ZIP_CODE_PREFIX
+            description: "Zip code prefix for the geolocation."
+            tests:
+              - not_null
+          - name: GEOLOCATION_LAT
+            description: "Latitude of the geolocation."
+            tests:
+              - not_null
+          - name: GEOLOCATION_LNG
+            description: "Longitude of the geolocation."
+            tests:
+              - not_null
+          - name: GEOLOCATION_CITY
+            description: "City of the geolocation."
+            tests:
+              - not_null
+          - name: GEOLOCATION_STATE
+            description: "State of the geolocation."
+            tests:
+              - not_null

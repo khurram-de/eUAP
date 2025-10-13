@@ -1,0 +1,215 @@
+models:
+  - name: STG_ECOM__ORDERS
+    description: "Staging table for ECOM orders data."
+    columns:
+      - name: ORDER_ID
+        description: "Unique identifier for each order."
+        tests:
+          - not_null
+          - unique
+      - name: CUSTOMER_ID
+        description: "Identifier for the customer who placed the order."
+        tests:
+          - not_null
+      - name: ORDER_STATUS
+        description: "Current status of the order (e.g., pending, shipped, delivered)."
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['unavailable','canceled','invoiced','approved','created','shipped','delivered','processing']
+          - not_null
+      - name: ORDER_PURCHASE_TIMESTAMP
+        description: "Timestamp when the order was purchased."
+        tests:
+          - not_null
+      # - name: SELLER_ID
+      #   description: "Identifier for the seller fulfilling the order."
+      #   tests:
+      #     - not_null
+      #     - relationships:
+      #         arguments:
+      #           to: ref('STG_ECOM__SELLERS')
+      #           field: SELLER_ID      
+
+  - name: STG_ECOM__CUSTOMERS
+    description: "Staging table for ECOM customers data."
+    columns:
+      - name: CUSTOMER_ID
+        description: "Unique identifier for each customer."
+        tests:
+          - not_null
+          - unique
+      - name: CUSTOMER_UNIQUE_ID
+        description: "Unique identifier for each customer across multiple orders."
+        tests:
+          - not_null
+      - name: CUSTOMER_ZIP_CODE_PREFIX
+        description: "Zip code prefix of the customer's address."
+        tests:
+          - not_null
+      - name: CUSTOMER_CITY
+        description: "City of the customer's address."
+        tests:
+          - not_null
+      - name: CUSTOMER_STATE
+        description: "State of the customer's address."
+        tests:
+          - not_null
+
+  - name: STG_ECOM__SELLERS
+    description: "Staging table for ECOM sellers data."
+    columns:
+      - name: SELLER_ID
+        description: "Unique identifier for each seller."
+        tests:
+          - not_null
+          - unique
+      - name: SELLER_ZIP_CODE_PREFIX
+        description: "Zip code prefix of the seller's address."
+        tests:
+          - not_null
+      - name: SELLER_CITY
+        description: "City of the seller's address."
+        tests:
+          - not_null
+      - name: SELLER_STATE
+        description: "State of the seller's address."
+        tests:
+          - not_null
+
+  - name: STG_ECOM__ORDER_ITEMS
+    description: "Staging table for ECOM order items data."
+    columns:
+      - name: ORDER_ID
+        description: "Identifier for the order to which the item belongs."
+        tests:
+          - not_null
+      - name: ORDER_ITEM_ID
+        description: "Sequential identifier for items within an order."
+        tests:
+          - not_null
+      - name: PRODUCT_ID
+        description: "Identifier for the product."
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('STG_ECOM__PRODUCTS')
+                field: PRODUCT_ID
+      - name: SELLER_ID
+        description: "Identifier for the seller fulfilling the order item."
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('STG_ECOM__SELLERS')
+                field: SELLER_ID
+      - name: SHIPPING_LIMIT_DATE
+        description: "Date by which the item should be shipped."
+        tests:
+          - not_null
+      - name: PRICE
+        description: "Price of the order item."
+        tests:
+          - not_null
+      - name: FREIGHT_VALUE
+        description: "Freight value for shipping the order item."
+        tests:
+          - not_null
+
+  - name: STG_ECOM__PAYMENTS
+    description: "Staging table for ECOM payments data."
+    columns:
+      - name: ORDER_ID
+        description: "Identifier for the order associated with the payment."
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('STG_ECOM__ORDERS')
+                field: ORDER_ID
+      - name: PAYMENT_SEQUENTIAL
+        description: "Sequential identifier for payments associated with an order."
+        tests:
+          - not_null
+      - name: PAYMENT_TYPE
+        description: "Type of payment (e.g., credit card, voucher, boleto)."
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ["debit_card", "not_defined", "credit_card", "voucher", "boleto"]
+      - name: PAYMENT_INSTALLMENTS
+        description: "Number of installments for the payment."
+        tests:
+          - not_null
+      - name: PAYMENT_VALUE
+        description: "Value of the payment."
+        tests:
+          - not_null
+
+  - name: STG_ECOM__PRODUCTS
+    description: "Staging table for ECOM products data."
+    columns:
+      - name: PRODUCT_ID
+        description: "Unique identifier for each product."
+        tests:
+          - not_null
+          - unique
+
+  - name: STG_ECOM__REVIEWS
+    description: "Staging table for ECOM reviews data."
+    columns:
+      - name: ORDER_ID
+        description: "Identifier for the order associated with the review."
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('STG_ECOM__ORDERS')
+                field: ORDER_ID
+      - name: REVIEW_ID
+        description: "Unique identifier for each review."
+        tests:
+          - not_null
+      - name: REVIEW_SCORE
+        description: "Score given in the review (1 to 5)."
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: [1, 2, 3, 4, 5]
+      - name: REVIEW_COMMENT_TITLE
+        description: "Title of the review comment."
+      - name: REVIEW_COMMENT_MESSAGE
+        description: "Message content of the review comment."
+      - name: REVIEW_CREATION_DATE
+        description: "Date when the review was created."
+        tests:
+          - not_null
+      - name: REVIEW_ANSWER_TIMESTAMP
+        description: "Timestamp when the review was answered by the seller."
+
+  - name: STG_ECOM__GEOLOCATION
+    description: "Staging table for ECOM geolocation data."
+    columns:
+      - name: GEOLOCATION_ZIP_CODE_PREFIX
+        description: "Zip code prefix for geolocation."
+        tests:
+          - not_null
+      - name: GEOLOCATION_LAT
+        description: "Latitude coordinate for geolocation."
+        tests:
+          - not_null
+      - name: GEOLOCATION_LNG
+        description: "Longitude coordinate for geolocation."
+        tests:
+          - not_null
+      - name: GEOLOCATION_CITY
+        description: "City associated with the geolocation."
+        tests:
+          - not_null
+      - name: GEOLOCATION_STATE
+        description: "State associated with the geolocation."
+        tests:
+          - not_null

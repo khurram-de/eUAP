@@ -38,7 +38,7 @@ CREATE OR REPLACE TABLE RAW.ECOM.ORDER_ITEMS (
 
 CREATE OR REPLACE TABLE RAW.ECOM.SELLERS (
   seller_id varchar NOT NULL,
-  seller_zip_code_prefix int,
+  seller_zip_code_prefix varchar,
   seller_city varchar,
   seller_state varchar
 );
@@ -60,13 +60,12 @@ CREATE OR REPLACE TABLE RAW.ECOM.CUSTOMERS (
 
 
 CREATE OR REPLACE TABLE RAW.ECOM.GEOLOCATION (
-  geolocation_zip_code_prefix int,
+  geolocation_zip_code_prefix varchar,
   geolocation_lat varchar,
   geolocation_lng varchar,
   geolocation_city varchar,
   geolocation_state varchar
 );
-
 
 
 CREATE OR REPLACE TABLE RAW.ECOM.PAYMENTS (
