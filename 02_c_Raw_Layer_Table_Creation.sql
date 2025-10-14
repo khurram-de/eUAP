@@ -1,3 +1,9 @@
+--- 02_b_Raw_Layer_Table_Creation.sql
+-- This script creates the raw layer tables for the ECOM data warehouse.
+-- It defines the schema for each table based on the source data structure.
+-- Adjust data types and constraints as necessary to fit the actual data.
+-- Added _business_date, _ingested_at, and _source_file are metadata columns for tracking.
+
 USE ROLE SYSADMIN;
 
 CREATE OR REPLACE TABLE RAW.ECOM.ORDERS (
@@ -8,7 +14,10 @@ CREATE OR REPLACE TABLE RAW.ECOM.ORDERS (
   order_approved_at timestamp,
   order_delivered_carrier_date timestamp,
   order_delivered_customer_date timestamp,
-  order_estimated_delivery_date date
+  order_estimated_delivery_date date,
+  _business_date date,
+  _ingested_at timestamp,
+  _source_file string 
 );
 
 
@@ -21,8 +30,12 @@ CREATE OR REPLACE TABLE RAW.ECOM.PRODUCTS (
   product_weight_g int,
   product_length_cm int,
   product_height_cm int,
-  product_width_cm int
+  product_width_cm int,
+  _business_date date,
+  _ingested_at timestamp,
+  _source_file string 
 );
+
 
 
 CREATE OR REPLACE TABLE RAW.ECOM.ORDER_ITEMS (
@@ -32,7 +45,10 @@ CREATE OR REPLACE TABLE RAW.ECOM.ORDER_ITEMS (
   seller_id varchar NOT NULL,
   shipping_limit_date timestamp,
   price decimal(10,2),
-  freight_value decimal(10,2)
+  freight_value decimal(10,2),
+  _business_date date,
+  _ingested_at timestamp,
+  _source_file string 
 );
 
 
@@ -40,22 +56,31 @@ CREATE OR REPLACE TABLE RAW.ECOM.SELLERS (
   seller_id varchar NOT NULL,
   seller_zip_code_prefix varchar,
   seller_city varchar,
-  seller_state varchar
+  seller_state varchar,
+  _business_date date,
+  _ingested_at timestamp,
+  _source_file string 
 );
 
 
 CREATE OR REPLACE TABLE RAW.ECOM.PRODUCT_CATEGORY (
   product_category_name varchar,
-  product_category_name_english varchar
+  product_category_name_english varchar,
+  _business_date date,
+  _ingested_at timestamp,
+  _source_file string 
 );
 
 
 CREATE OR REPLACE TABLE RAW.ECOM.CUSTOMERS (
   customer_id varchar,
   customer_unique_id varchar,
-  customer_zip_code_prefix int,
+  customer_zip_code_prefix varchar,
   customer_city varchar,
-  customer_state varchar
+  customer_state varchar,
+  _business_date date,
+  _ingested_at timestamp,
+  _source_file string 
 );
 
 
@@ -64,8 +89,12 @@ CREATE OR REPLACE TABLE RAW.ECOM.GEOLOCATION (
   geolocation_lat varchar,
   geolocation_lng varchar,
   geolocation_city varchar,
-  geolocation_state varchar
+  geolocation_state varchar,
+  _business_date date,
+  _ingested_at timestamp,
+  _source_file string 
 );
+
 
 
 CREATE OR REPLACE TABLE RAW.ECOM.PAYMENTS (
@@ -73,7 +102,10 @@ CREATE OR REPLACE TABLE RAW.ECOM.PAYMENTS (
   payment_sequential int NOT NULL,
   payment_type varchar,
   payment_installments int,
-  payment_value decimal(10,2)
+  payment_value decimal(10,2),
+  _business_date date,
+  _ingested_at timestamp,
+  _source_file string 
 );
 
 
@@ -84,5 +116,8 @@ CREATE OR REPLACE TABLE RAW.ECOM.REVIEWS (
   review_comment_title varchar,
   review_comment_message varchar,
   review_creation_date timestamp,
-  review_answer_timestamp timestamp
+  review_answer_timestamp timestamp,
+  _business_date date,
+  _ingested_at timestamp,
+  _source_file string 
 );

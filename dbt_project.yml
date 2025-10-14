@@ -42,3 +42,11 @@ models:
       +materialized: view
     staging:
       +materialized: table
+
+
+vars:
+  warn_after_days: 9999
+  error_after_days: 9999
+  ecom_raw_database: 'RAW'
+  ecom_raw_schema: 'ECOM'
+  loaded_at_field: '_business_date' # default field to use for source freshness
