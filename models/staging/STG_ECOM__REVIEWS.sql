@@ -1,12 +1,12 @@
-SELECT
-	ORDER_ID AS ORDER_ID,
-	REVIEW_ID AS REVIEW_ID,
-	REVIEW_SCORE AS REVIEW_SCORE,
-	REVIEW_COMMENT_TITLE AS REVIEW_COMMENT_TITLE,
-	REVIEW_COMMENT_MESSAGE AS REVIEW_COMMENT_MESSAGE,
-	REVIEW_CREATION_DATE AS REVIEW_CREATION_DATE,
-	REVIEW_ANSWER_TIMESTAMP AS REVIEW_ANSWER_TIMESTAMP,
+select
+	order_id as order_id,
+	review_id as review_id,
+	review_score as review_score,
+	review_comment_title as review_comment_title,
+	review_comment_message as review_comment_message,
+	review_creation_date as review_creation_date,
+	review_answer_timestamp as review_answer_timestamp,
     _business_date,
     _ingested_at,
     _source_file
-FROM {{ source('ECOM_RAW_STAGING', 'REVIEWS') }}
+from {{ source('ecom_raw_staging', 'reviews') }}

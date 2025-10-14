@@ -1,12 +1,12 @@
-SELECT
-	ORDER_ID AS ORDER_ID,
-	ORDER_ITEM_ID AS ORDER_ITEM_ID,
-	PRODUCT_ID AS PRODUCT_ID,
-	SELLER_ID AS SELLER_ID,
-	SHIPPING_LIMIT_DATE AS SHIPPING_LIMIT_DATE,
-	PRICE AS PRICE,
-	FREIGHT_VALUE AS FREIGHT_VALUE,
+select
+	order_id as order_id,
+	order_item_id as order_item_id,
+	product_id as product_id,
+	seller_id as seller_id,
+	shipping_limit_date as shipping_limit_date,
+	price as price,
+	freight_value as freight_value,
     _business_date,
     _ingested_at,
     _source_file
-FROM {{ source('ECOM_RAW_STAGING', 'ORDER_ITEMS') }}
+from {{ source('ecom_raw_staging', 'order_items') }}

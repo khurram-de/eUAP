@@ -1,10 +1,10 @@
-SELECT
-    GEOLOCATION_ZIP_CODE_PREFIX AS GEOLOCATION_ZIP_CODE_PREFIX,
-	GEOLOCATION_LAT AS GEOLOCATION_LAT,
-	GEOLOCATION_LNG AS GEOLOCATION_LNG,
-	GEOLOCATION_CITY AS GEOLOCATION_CITY,
-	GEOLOCATION_STATE AS GEOLOCATION_STATE,
+select
+    geolocation_zip_code_prefix as geolocation_zip_code_prefix,
+	geolocation_lat as geolocation_lat,
+	geolocation_lng as geolocation_lng,
+	geolocation_city as geolocation_city,
+	geolocation_state as geolocation_state,
     _business_date,
     _ingested_at,
     _source_file
-FROM {{ source('ECOM_RAW_STAGING', 'GEOLOCATION') }}
+from {{ source('ecom_raw_staging', 'geolocation') }}

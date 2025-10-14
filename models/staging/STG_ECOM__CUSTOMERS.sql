@@ -1,10 +1,10 @@
 select
-    CUSTOMER_ID,
-    CUSTOMER_UNIQUE_ID,
-    CUSTOMER_ZIP_CODE_PREFIX,
-    CUSTOMER_CITY,
-    CUSTOMER_STATE,
+    customer_id,
+    customer_unique_id,
+    customer_zip_code_prefix,
+    customer_city,
+    customer_state,
     _business_date,
     _ingested_at,
     _source_file
-from {{ source('ECOM_RAW_STAGING', 'CUSTOMERS') }}
+from {{ source('ecom_raw_staging', 'customers') }}

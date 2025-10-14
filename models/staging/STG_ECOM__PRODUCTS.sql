@@ -1,14 +1,14 @@
-SELECT
-	PRODUCT_ID AS PRODUCT_ID,
-	UPPER(TRIM(PRODUCT_CATEGORY_NAME)) AS PRODUCT_CATEGORY_NAME,
-	PRODUCT_NAME_LENGTH AS PRODUCT_NAME_LENGTH,
-	PRODUCT_DESCRIPTION_LENGTH AS PRODUCT_DESCRIPTION_LENGTH,
-	PRODUCT_PHOTOS_QTY AS PRODUCT_PHOTOS_QTY,
-	PRODUCT_WEIGHT_G AS PRODUCT_WEIGHT_G,
-	PRODUCT_LENGTH_CM AS PRODUCT_LENGTH_CM,
-	PRODUCT_HEIGHT_CM AS PRODUCT_HEIGHT_CM,
-	PRODUCT_WIDTH_CM AS PRODUCT_WIDTH_CM,
+select
+	product_id as product_id,
+	upper(trim(product_category_name)) as product_category_name,
+	product_name_length as product_name_length,
+	product_description_length as product_description_length,
+	product_photos_qty as product_photos_qty,
+	product_weight_g as product_weight_g,
+	product_length_cm as product_length_cm,
+	product_height_cm as product_height_cm,
+	product_width_cm as product_width_cm,
     _business_date,
     _ingested_at,
     _source_file
-FROM {{ source('ECOM_RAW_STAGING', 'PRODUCTS') }}
+from {{ source('ecom_raw_staging', 'products') }}

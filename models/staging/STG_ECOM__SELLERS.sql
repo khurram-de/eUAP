@@ -1,9 +1,9 @@
-SELECT 
-	SELLER_ID AS SELLER_ID,
-	SELLER_ZIP_CODE_PREFIX AS SELLER_ZIP_CODE_PREFIX,
-	UPPER(TRIM(SELLER_CITY)) AS SELLER_CITY,
-	UPPER(TRIM(SELLER_STATE)) AS SELLER_STATE,
+select 
+	seller_id as seller_id,
+	seller_zip_code_prefix as seller_zip_code_prefix,
+	upper(trim(seller_city)) as seller_city,
+	upper(trim(seller_state)) as seller_state,
     _business_date,
     _ingested_at,
     _source_file
-FROM {{ source('ECOM_RAW_STAGING', 'SELLERS') }}
+from {{ source('ecom_raw_staging', 'sellers') }}

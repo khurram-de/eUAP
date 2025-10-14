@@ -1,13 +1,13 @@
-SELECT 
-    ORDER_ID AS ORDER_ID,
-	CUSTOMER_ID AS CUSTOMER_ID,
-	ORDER_STATUS AS ORDER_STATUS,
-	ORDER_PURCHASE_TIMESTAMP AS ORDER_PURCHASE_TIMESTAMP,
-	ORDER_APPROVED_AT AS ORDER_APPROVED_AT,
-	ORDER_DELIVERED_CARRIER_DATE AS ORDER_DELIVERED_CARRIER_DATE,
-	ORDER_DELIVERED_CUSTOMER_DATE AS ORDER_DELIVERED_CUSTOMER_DATE,
-	ORDER_ESTIMATED_DELIVERY_DATE AS ORDER_ESTIMATED_DELIVERY_DATE,
+select 
+    order_id as order_id,
+	customer_id as customer_id,
+	order_status as order_status,
+	order_purchase_timestamp as order_purchase_timestamp,
+	order_approved_at as order_approved_at,
+	order_delivered_carrier_date as order_delivered_carrier_date,
+	order_delivered_customer_date as order_delivered_customer_date,
+	order_estimated_delivery_date as order_estimated_delivery_date,
     _business_date,
     _ingested_at,
     _source_file
-FROM {{ source('ECOM_RAW_STAGING', 'ORDERS') }}
+from {{ source('ecom_raw_staging', 'orders') }}
