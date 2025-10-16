@@ -42,6 +42,8 @@ models:
       +materialized: view
     staging:
       +materialized: table
+    intermediate:
+      +materialized: incremental
 
 
 vars:
