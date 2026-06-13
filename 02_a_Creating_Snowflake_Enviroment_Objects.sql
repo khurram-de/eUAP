@@ -9,11 +9,17 @@ USE ROLE ACCOUNTADMIN;
 ------------------------------------------------------------
 -- 1️⃣  Create a dedicated role for dbt / analytics user   --
 ------------------------------------------------------------
+
 CREATE ROLE IF NOT EXISTS TRANSFORMER;
+GRANT ROLE TRANSFORMER TO ROLE SYSADMIN;
 
 ------------------------------------------------------------
 -- 2️⃣  Create a dedicated warehouse                       --
 ------------------------------------------------------------
+
+-- Use admin privileges
+USE ROLE SYSADMIN;
+
 CREATE WAREHOUSE IF NOT EXISTS WH_ECOM
   WITH WAREHOUSE_SIZE = 'XSMALL'
   AUTO_SUSPEND = 60
@@ -26,6 +32,7 @@ GRANT USAGE ON WAREHOUSE WH_ECOM TO ROLE TRANSFORMER;
 ------------------------------------------------------------
 -- 3️⃣  Create RAW database and schema (for source data)   --
 ------------------------------------------------------------
+
 CREATE DATABASE IF NOT EXISTS RAW;
 CREATE SCHEMA IF NOT EXISTS RAW.ECOM;
 
@@ -46,13 +53,16 @@ GRANT USAGE ON DATABASE ANALYTICS TO ROLE TRANSFORMER;
 GRANT USAGE ON SCHEMA ANALYTICS.ECOM TO ROLE TRANSFORMER;
 GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA ANALYTICS.ECOM TO ROLE TRANSFORMER;
 GRANT SELECT, INSERT, UPDATE, DELETE ON FUTURE TABLES IN SCHEMA ANALYTICS.ECOM TO ROLE TRANSFORMER;
+GRANT CREATE TABLE ON SCHEMA ANALYTICS.ECOM TO TRANSFORMER;
 
 ------------------------------------------------------------
 -- 5️⃣  (Optional) Create a user and assign role           --
 ------------------------------------------------------------
 
+USE ROLE ACCOUNTADMIN; 
+
 CREATE USER IF NOT EXISTS DBT_USER
-  PASSWORD = '***********************'  -- Replace with a strong password
+  PASSWORD = '*********************'  -- Replace with a strong password
   DEFAULT_ROLE = TRANSFORMER
   DEFAULT_WAREHOUSE = WH_ECOM
   DEFAULT_NAMESPACE = ANALYTICS.ECOM
@@ -63,4 +73,8 @@ GRANT ROLE TRANSFORMER TO USER DBT_USER;
 ------------------------------------------------------------
 -- 6️⃣  (Optional) Allow TRANSFORMER to use the warehouse  --
 ------------------------------------------------------------
+
+-- Use admin privileges
+USE ROLE SYSADMIN;
+
 GRANT OPERATE ON WAREHOUSE WH_ECOM TO ROLE TRANSFORMER;

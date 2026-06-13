@@ -37,9 +37,6 @@ clean-targets:         # directories to be removed by `dbt clean`
 
 models:
   dbt_project_eUAP:
-    # Applies to all files under models/example/
-    example:
-      +materialized: view
     staging:
       +materialized: table
     intermediate:
@@ -52,3 +49,6 @@ vars:
   ecom_raw_database: 'RAW'
   ecom_raw_schema: 'ECOM'
   loaded_at_field: '_business_date' # default field to use for source freshness
+  payment_method_values: ["debit_card", "not_defined", "credit_card", "voucher", "boleto"]
+  review_score_values: [1, 2, 3, 4, 5]
+  order_status_values: ['unavailable','canceled','invoiced','approved','created','shipped','delivered','processing']

@@ -1,3 +1,8 @@
+{{ config(
+    materialized='incremental',
+    unique_key='order_id'
+) }}
+
 select 
     order_id,
     count(*) as payment_installments_count,
@@ -9,8 +14,12 @@ select
     sum(case when payment_type = 'boleto' then payment_value else 0 end) as boleto_amount,
     sum(case when payment_type = 'voucher' then payment_value else 0 end) as voucher_amount,
     sum(case when payment_type = 'debit_card' then payment_value else 0 end) as debit_card_amount,
-    
     max(_business_date) as latest_business_date
-    
+
 from {{ ref('stg_ecom__payments') }}
+
+{% if is_incremental() %}
+    where _business_date > (select max(latest_business_date) from {{ this }})
+{% endif %}
+
 group by order_id

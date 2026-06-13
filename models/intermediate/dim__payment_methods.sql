@@ -21,5 +21,4 @@ select distinct
         when 'voucher' then true
         else false
     end as allows_installments
-    
 from {{ ref('stg_ecom__payments') }}

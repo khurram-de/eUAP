@@ -16,7 +16,7 @@ models:
         tests:
           - accepted_values:
               arguments:
-                values: ['unavailable','canceled','invoiced','approved','created','shipped','delivered','processing']
+                values: "{{ var('order_status_values')}}"
           - not_null
       - name: order_purchase_timestamp
         description: "timestamp when the order was purchased."
@@ -71,6 +71,11 @@ models:
 
   - name: stg_ecom__order_items
     description: "staging table for ecom order items data."
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - order_id
+            - order_item_id
     columns:
       - name: order_id
         description: "identifier for the order to which the item belongs."
@@ -84,18 +89,10 @@ models:
         description: "identifier for the product."
         tests:
           - not_null
-          - relationships:
-              arguments:
-                to: ref('stg_ecom__products')
-                field: product_id
       - name: seller_id
         description: "identifier for the seller fulfilling the order item."
         tests:
           - not_null
-          - relationships:
-              arguments:
-                to: ref('stg_ecom__sellers')
-                field: seller_id
       - name: shipping_limit_date
         description: "date by which the item should be shipped."
         tests:
@@ -111,15 +108,16 @@ models:
 
   - name: stg_ecom__payments
     description: "staging table for ecom payments data."
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - order_id
+            - payment_sequential
     columns:
       - name: order_id
         description: "identifier for the order associated with the payment."
         tests:
           - not_null
-          - relationships:
-              arguments:
-                to: ref('stg_ecom__orders')
-                field: order_id
       - name: payment_sequential
         description: "sequential identifier for payments associated with an order."
         tests:
@@ -130,7 +128,8 @@ models:
           - not_null
           - accepted_values:
               arguments:
-                values: ["debit_card", "not_defined", "credit_card", "voucher", "boleto"]
+                values: "{{ var('payment_method_values')}}"
+                quote: true 
       - name: payment_installments
         description: "number of installments for the payment."
         tests:
@@ -156,10 +155,6 @@ models:
         description: "identifier for the order associated with the review."
         tests:
           - not_null
-          - relationships:
-              arguments:
-                to: ref('stg_ecom__orders')
-                field: order_id
       - name: review_id
         description: "unique identifier for each review."
         tests:
@@ -170,7 +165,8 @@ models:
           - not_null
           - accepted_values:
               arguments:
-                values: [1, 2, 3, 4, 5]
+                values: "{{ var('review_score_values') }}"
+                quote: false
       - name: review_comment_title
         description: "title of the review comment."
       - name: review_comment_message

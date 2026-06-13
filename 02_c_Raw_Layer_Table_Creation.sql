@@ -98,7 +98,7 @@ CREATE OR REPLACE TABLE RAW.ECOM.GEOLOCATION (
 
 
 CREATE OR REPLACE TABLE RAW.ECOM.PAYMENTS (
-  order_id varchar NOT NULL,
+  order_id varchar NOT NULL, 
   payment_sequential int NOT NULL,
   payment_type varchar,
   payment_installments int,

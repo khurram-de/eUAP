@@ -8,12 +8,13 @@ USE ROLE ACCOUNTADMIN;
 CREATE OR REPLACE STORAGE INTEGRATION sf_euap_s3_integration
   TYPE = EXTERNAL_STAGE
   STORAGE_PROVIDER = 'S3'
-  STORAGE_AWS_ROLE_ARN = 'arn:aws:iam::****************:role/*****************'
+  STORAGE_AWS_ROLE_ARN = 'arn:aws:iam::************:role/**********************'  -- Replace with your AWS IAM Role ARN
   ENABLED = TRUE
   STORAGE_ALLOWED_LOCATIONS = ('s3://e-commerce-unified-analytics-platform/');
 
 DESCRIBE INTEGRATION sf_euap_s3_integration;
 
+USE RAW.ECOM;
 ---> creating External Stage with above integration
 CREATE OR REPLACE STAGE dev_euap_stg
   URL = 's3://e-commerce-unified-analytics-platform/euap_dev'
