@@ -1,3 +1,4 @@
+
 -- analysis/01_data_profiling.sql
 -- =================================================================
 -- DATA PROFILING: ORDERS

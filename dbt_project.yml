@@ -38,7 +38,7 @@ clean-targets:         # directories to be removed by `dbt clean`
 models:
   dbt_project_eUAP:
     staging:
-      +materialized: table
+      +materialized: view
     intermediate:
       +materialized: incremental
 
@@ -48,6 +48,9 @@ vars:
   error_after_days: 9999
   ecom_raw_database: 'RAW'
   ecom_raw_schema: 'ECOM'
+  ecom_analytics_database: 'ANALYTICS'
+  ecom_analytics_schema: 'ECOM'
+  ecom_analytics_snapshot_schema: 'SNAPSHOT'
   loaded_at_field: '_business_date' # default field to use for source freshness
   payment_method_values: ["debit_card", "not_defined", "credit_card", "voucher", "boleto"]
   review_score_values: [1, 2, 3, 4, 5]
