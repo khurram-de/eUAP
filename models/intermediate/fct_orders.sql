@@ -1,7 +1,8 @@
 {{
     config(
         materialized='incremental',
-        unique_key='order_id'
+        unique_key='order_id',
+        on_schema_change='append_new_columns'
     )
 }}
 
@@ -39,7 +40,33 @@ select
     o.order_delivered_carrier_date,
     o.order_delivered_customer_date,
     o.order_estimated_delivery_date,
-    
+
+    -- derived attributes:
+    DATEDIFF( hour, o.order_purchase_timestamp, o.order_approved_at ) as hours_to_approval,
+    DATEDIFF( day, o.order_approved_at, o.order_delivered_carrier_date ) as approval_to_carrier_days,
+    DATEDIFF( day, o.order_delivered_carrier_date, o.order_delivered_customer_date ) as carrier_to_customer_days,
+    DATEDIFF( day, o.order_purchase_timestamp, o.order_delivered_customer_date ) as purchase_to_customer_days,
+    CASE
+        WHEN o.order_status = 'canceled' THEN NULL
+        WHEN o.order_delivered_customer_date IS NULL THEN NULL
+        -- NOTE: in a live system, this branch would also flag undelivered
+        -- orders as overdue once their estimated delivery date plus a
+        -- configurable lag buffer has passed, e.g.:
+        -- WHEN order_estimated_delivery_date < dateadd(day, -2, current_timestamp())
+        --      AND order_delivered_customer_date IS NULL THEN 0
+        -- Not implemented as live logic here because Olist is a static
+        -- historical dataset — every order is already in a final state
+        -- (delivered or cancelled), so this branch is untestable.
+        WHEN o.order_delivered_customer_date <= o.order_estimated_delivery_date THEN 1
+        ELSE 0
+    END as is_on_time,
+
+    CASE
+        WHEN o.order_status = 'canceled' THEN 'canceled'
+        WHEN o.order_status = 'delivered' THEN 'delivered'
+        ELSE 'in_progress'
+    END as order_status_category,
+
     -- Foreign Keys to dimensions:
     o.customer_id,  -- FK to dim_customers
     p.primary_payment_method_key,  -- FK to dim_payment_methods

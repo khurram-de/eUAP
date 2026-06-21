@@ -41,6 +41,8 @@ models:
       +materialized: view
     intermediate:
       +materialized: incremental
+    marts:
+      +materialized: table
 
 
 vars:
