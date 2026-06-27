@@ -57,3 +57,4 @@ vars:
   payment_method_values: ["debit_card", "not_defined", "credit_card", "voucher", "boleto"]
   review_score_values: [1, 2, 3, 4, 5]
   order_status_values: ['unavailable','canceled','invoiced','approved','created','shipped','delivered','processing']
+  order_status_category_values: ['delivered', 'canceled', 'in_progress']

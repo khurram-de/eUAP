@@ -115,17 +115,17 @@ eUAP/
 ```
 
 ---
-
+ 
 ## 🚧 Status
-
+ 
 **Done:**
 - 3-stakeholder metric charter (Sales / Operations / CX)
 - `fct_orders` and `fct_order_items` — grain-clean, enriched with derived business logic
 - `dim_sellers` via SCD Type 2 snapshot, with temporal join in `fct_order_items`
 - `mart_fulfilment` and `mart_fulfilment_by_seller`
+- dbt tests on `fct_orders` and `fct_order_items`, plus a reconciliation test between `mart_fulfilment` and `fct_orders`
 
 **Next:**
-- dbt tests on fact and mart models
 - CI/CD (GitHub Actions running `dbt test` on PRs)
 - Orchestration (currently run manually via `dbt run` / `dbt build`)
 - Sales and CX verticals

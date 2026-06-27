@@ -1,0 +1,65 @@
+models:
+  - name: fct_orders
+    description: "this table contains order information including order_id, customer_id, order_status, order_purchase_timestamp, order_approved_at, order_delivered_carrier_date, order_delivered_customer_date, and order_estimated_delivery_date."
+    columns:
+      - name: order_id
+        description: "unique identifier for each order."
+        tests:
+        - not_null
+        - unique
+      - name: is_on_time
+        description: "boolean indicating whether the order was delivered on time."
+        tests:
+          - accepted_values:
+              arguments:
+                values: [0, 1]
+      - name: order_status
+        description: "categorical variable indicating the status of the order (e.g., delivered, canceled, in progress)."
+        tests:
+          - accepted_values:
+              arguments:
+                values: "{{ var('order_status_values') }}"
+      - name: order_status_category
+        description: "categorical variable indicating the category of the order status (e.g., completed, canceled, in_progress)."
+        tests:
+          - accepted_values:
+              arguments:
+                values: "{{ var('order_status_category_values') }}"
+  - name: fct_order_items
+    description: "this table contains order item information including order_id, product_id, seller_id, shipping_limit_date, price, freight_value, and payment_sequential."
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - order_id
+            - order_item_id
+    columns:
+      - name: order_id
+        description: "identifier for the order to which the item belongs."
+        tests:
+          - not_null
+      - name: order_item_id
+        description: "unique identifier for each order item."
+        tests:
+          - not_null
+      - name: seller_id
+        description: "identifier for the seller of the item."
+        tests:
+          - not_null
+      - name: seller_zip_code_prefix
+        description: "the first five digits of the seller's zip code."
+        tests:
+          - not_null:
+              config:
+                severity: warn
+      - name: seller_city
+        description: "the city where the seller is located."
+        tests:
+          - not_null:
+              config:
+                severity: warn
+      - name: seller_state
+        description: "the state where the seller is located."
+        tests:
+          - not_null:
+              config:
+                severity: warn
