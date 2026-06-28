@@ -1,0 +1,49 @@
+name: dbt CI
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  dbt_build:
+    runs-on: ubuntu-latest
+    env:
+      SF_EUAP_DEV_ACCOUNT: ${{ secrets.SF_EUAP_DEV_ACCOUNT }}
+      SF_EUAP_DEV_DBT_USER: ${{ secrets.SF_EUAP_DEV_DBT_USER }}
+      SF_EUAP_DEV_DB: ${{ secrets.SF_EUAP_DEV_DB }}
+      SF_EUAP_DEV_WAREHOUSE: ${{ secrets.SF_EUAP_DEV_WAREHOUSE }}
+      SF_EUAP_DEV_SCHEMA: ${{ secrets.SF_EUAP_DEV_SCHEMA }}
+      SF_EUAP_DEV_PASSWORD: ${{ secrets.SF_EUAP_DEV_PASSWORD }}
+      SF_EUAP_DEV_ROLE: ${{ secrets.SF_EUAP_DEV_ROLE }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dbt
+        run: pip install dbt-snowflake
+      - name: Run dependencies
+        run: dbt deps
+      - name: Configure dbt profile
+        run: |
+          mkdir -p ~/.dbt
+          cat > ~/.dbt/profiles.yml << EOF
+          default:
+            target: dev
+            outputs:
+              dev:
+                type: snowflake
+                threads: 16
+                account: "${SF_EUAP_DEV_ACCOUNT}"
+                user: "${SF_EUAP_DEV_DBT_USER}"
+                database: "${SF_EUAP_DEV_DB}"
+                warehouse: "${SF_EUAP_DEV_WAREHOUSE}"
+                schema: "${SF_EUAP_DEV_SCHEMA}"
+                password: "${SF_EUAP_DEV_PASSWORD}"
+                role: "${SF_EUAP_DEV_ROLE}"
+          EOF
+      - name: Run dbt build
+        run: dbt build --target dev
